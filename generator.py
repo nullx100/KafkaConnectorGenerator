@@ -3,7 +3,7 @@ decorative_line = "=" * 80
 print(decorative_line)
 print("Autor: Santiago Aguado")
 print("GitHub: https://github.com/nullx100")
-print("Uso: Este script genera un archivo de configuración JSON para un conector OracleCDC de Kafka Connect. Debes de proporcionar los valores de los siguientes parámetros: nombre del conector, nombre del topic, nombre de la base de datos, nombre del schema y nombre de la tabla.")
+print("Uso: Este script genera un archivo de configuración JSON para un conector OracleCDC de Kafka Connect")
 print("⚠⚠⚠ Peligro de solapamiento de topics si no se sabe lo que se hace. Revisar muy bien el resultado antes de importar en entornos productivos. ⚠⚠⚠")
 print(decorative_line)
 
