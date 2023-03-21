@@ -11,29 +11,30 @@ import json
 
 # Solicitar los valores de los parámetros
 
-domain = input("Ingresa el nombre del dominio (DDD):")
-subdomain = input("Ingresa el nombre del dominio (DDD):")
-server = input("Ingresa del servidor de base de datos: ")
+domain = input("Ingresa el nombre del dominio (DDD): ")
+subdomain = input("Ingresa el nombre del subdominio (DDD): ")
+server = input("Ingresa del servidor de bd: ")
 database = input("Ingresa el nombre de la base de datos: ")
-password = input("Ingresa la password de la base de datos para el usuario C##CONFLUENT: ")
+password = input("Ingresa la password de la bd para el usuario C##CONFLUENT: ")
 schema = input("Ingresa el nombre del schema: ")
 table = input("Ingresa el nombre de la tabla: ")
-
 
 # Formatear los valores
 domain = domain.lower()
 subdomain = subdomain.lower()
-server = server.lower() + ".riu.net"
+server = server.lower()
+if "riu.net" not in server: server =  + ".riu.net" 
 database = database.upper()
 schema = schema.upper()
 table = table.upper()
+
 
 connector_name = f"{database}.{domain}.{subdomain}.{table}.sync-0"
 topic_name = f"{domain}.{subdomain}.{table}.sync-0"
 topic_redo = f"redo-log-topic-{table}-0"
 topic_heartbeat = f"Heartbeat-Topic-{table}-0"
+topic_corruption = f"redo-log-topic-{table}-0-error-corruption"
 table_regex = f"{database}.({schema}.{table})"
-topi_corruption = f"redo-log-topic-{table}-0-error-corruption"
 
 # Crear el diccionario de configuración
 config = {
@@ -68,7 +69,7 @@ config = {
         "oracle.username": "C##CONFLUENT",
         "oracle.password": password,
         "start.from": "current",
-        "redo.log.topic.name": f"redo-log-topic-{table.upper()}-0",
+        "redo.log.topic.name": topic_redo,
         "redo.log.corruption.topic": topic_corruption,
         "redo.log.consumer.bootstrap.servers": "dev-cp-kafka-headless:9092",
         "behavior.on.dictionary.mismatch": "log",
@@ -81,5 +82,5 @@ config = {
 }
 
 # Guardar el diccionario como archivo JSON
-with open(f"{name}.json", "w") as outfile:
+with open(f"{connector_name}.json", "w") as outfile:
     json.dump(config, outfile, indent=4)
